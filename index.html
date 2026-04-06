@@ -1,184 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE BOX Z1 | Official Portal</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
-    <style>
-        :root {
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --brand-yellow: #fff2ad; 
-            --brand-blue: #4455f0; 
-            --brand-red: #e31225;
-            --text: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.5);
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BOX Z1 | Official Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --bg: #030303;
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.4);
+            /* Brand Colors from your Logo */
+            --brand-yellow: #fff2ad; 
+            --brand-blue: #4455f0; 
+            --brand-green: #10cc2c;
+            --brand-red: #e31225;
+            --ease: cubic-bezier(0.2, 1, 0.2, 1);
+        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Space Grotesk', sans-serif;
-            overflow-x: hidden;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: smooth; }
 
-        /* --- CUSTOM CURSOR --- */
-        #cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; }
-        #cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
 
-        /* --- NAV --- */
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .logo { font-family: 'Syncopate'; font-weight: 700; letter-spacing: 5px; font-size: 0.9rem; text-decoration: none; color: #fff; }
-        .nav-links a { margin-left: 2rem; text-decoration: none; color: var(--text-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--brand-yellow); }
+        /* --- INTERACTIVE CURSOR --- */
+        #cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; }
+        #cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.15s var(--ease); }
 
-        /* --- HERO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
-        h1 { font-family: 'Syncopate'; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.9; margin-bottom: 20px; }
-        .hero p { color: var(--brand-yellow); letter-spacing: 10px; font-size: 0.9rem; margin-bottom: 40px; }
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 5%; z-index: 1000;
+            background: rgba(3, 3, 3, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+        .nav-logo { width: 40px; height: 40px; background: var(--brand-yellow); border-radius: 50%; padding: 4px; object-fit: contain; }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; transition: 0.3s; }
+        .nav-links a:hover { color: var(--brand-yellow); }
 
-        /* --- GALLERY --- */
-        section { padding: 100px 10%; }
-        .section-title { margin-bottom: 60px; }
-        .section-title h2 { font-family: 'Syncopate'; font-size: 2.5rem; margin-bottom: 10px; }
-        .section-title div { width: 50px; height: 4px; background: var(--brand-blue); }
+        /* --- BACKGROUND PARALLAX --- */
+        .bg-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .float { position: absolute; opacity: 0.2; filter: blur(3px); }
+        .red-ring { width: 200px; height: 200px; border: 30px solid var(--brand-red); border-radius: 50%; top: 15%; right: 5%; }
+        .blue-triangle { width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid var(--brand-blue); bottom: 10%; left: 5%; }
+        .green-sphere { width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, var(--brand-green), #000); border-radius: 50%; top: 50%; right: 20%; }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            grid-auto-rows: 400px;
-            gap: 20px;
-        }
-        .gallery-item { 
-            position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 4px;
-        }
-        .gallery-item img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            transition: transform 0.8s cubic-bezier(0.2, 1, 0.2, 1);
-            filter: grayscale(100%) brightness(0.7);
-        }
-        .gallery-item:hover img { transform: scale(1.1); filter: grayscale(0%) brightness(1); }
-        .gallery-item:hover { border-color: var(--brand-yellow); }
+        /* --- SECTIONS --- */
+        section { min-height: 100vh; padding: 140px 10% 100px; position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+        h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; }
+        .section-header { margin-bottom: 4rem; }
+        .section-header h2 { font-family: 'Syncopate', sans-serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .section-header p { color: var(--brand-yellow); letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; }
 
-        /* --- JOIN US FORM --- */
-        .join-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 50px;
-            background: var(--card-bg); padding: 60px; border-radius: 2px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .join-info h3 { font-size: 2rem; margin-bottom: 20px; color: var(--brand-yellow); }
-        .join-info p { color: var(--text-dim); margin-bottom: 20px; line-height: 1.8; }
-        
-        input, textarea {
-            width: 100%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px; color: #fff; margin-bottom: 20px; font-family: inherit;
-        }
-        input:focus { outline: none; border-color: var(--brand-blue); }
-        .btn {
-            padding: 15px 40px; background: #fff; color: #000; border: none;
-            font-family: 'Syncopate'; font-weight: 700; font-size: 0.8rem;
-            cursor: pointer; transition: 0.3s;
-        }
-        .btn:hover { background: var(--brand-yellow); transform: translateY(-3px); }
+        /* --- GALLERY --- */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .photo-box { aspect-ratio: 16/9; background: #0a0a0a; border: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; color: #222; font-weight: 700; transition: 0.5s; }
+        .photo-box:hover { border-color: var(--brand-blue); color: var(--brand-blue); background: #111; }
 
-        /* --- FOOTER --- */
-        footer { padding: 50px 10%; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-dim); font-size: 0.8rem; letter-spacing: 3px; }
+        /* --- SPECS --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .card { background: rgba(255, 255, 255, 0.02); padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s; }
+        .card:hover { border-color: var(--brand-green); transform: translateY(-10px); }
+        .card h3 { margin-bottom: 1rem; font-size: 1.5rem; }
+        .card p { color: var(--text-dim); }
 
-        .reveal { opacity: 0; transform: translateY(30px); }
+        /* --- JOIN FORM --- */
+        .form-container { max-width: 600px; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #222; padding: 1.2rem; color: #fff; margin-bottom: 1.2rem; font-family: inherit; }
+        input:focus { border-color: var(--brand-yellow); outline: none; }
+        .submit-btn { width: 100%; padding: 1.2rem; background: #fff; color: #000; border: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .submit-btn:hover { background: var(--brand-yellow); }
 
-        @media (max-width: 768px) {
-            .join-container { grid-template-columns: 1fr; padding: 30px; }
-            h1 { font-size: 3.5rem; }
-        }
-    </style>
+        footer { padding: 60px 10%; border-top: 1px solid #111; text-align: center; color: var(--text-dim); font-size: 0.7rem; letter-spacing: 4px; }
+        .reveal { opacity: 0; transform: translateY(30px); }
+    </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
-    <nav>
-        <a href="#" class="logo">BOX Z1</a>
-        <div class="nav-links">
-            <a href="#gallery">Gallery</a>
-            <a href="#join">Join</a>
-        </div>
-    </nav>
+    <nav>
+        <a href="#home" class="nav-logo-wrap">
+            <img src="image_98ea0b.png" alt="Z1 Logo" class="nav-logo">
+            <span style="font-family: 'Syncopate'; font-weight: 700; letter-spacing: 3px; font-size: 0.8rem;">BOX Z1</span>
+        </a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#photos">Photos</a>
+            <a href="#specs">Specs</a>
+            <a href="#join">Join</a>
+        </div>
+    </nav>
 
-    <div class="hero">
-        <p class="reveal">GEOMETRIC EVOLUTION</p>
-        <h1 class="reveal">THE FUTURE<br>IS BOXED.</h1>
-    </div>
+    <div class="bg-shapes">
+        <div class="float red-ring" id="ring"></div>
+        <div class="float blue-triangle" id="triangle"></div>
+        <div class="float green-sphere" id="sphere"></div>
+    </div>
 
-    <section id="gallery">
-        <div class="section-title reveal">
-            <h2>GALLERY</h2>
-            <div></div>
-        </div>
-        <div class="gallery-grid">
-            <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Architecture"></div>
-            <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?auto=format&fit=crop&w=800&q=80" alt="Digital"></div>
-            <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Nature"></div>
-            <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Office"></div>
-        </div>
-    </section>
+    <main>
+        <section id="home">
+            <div style="text-align: center;">
+                <p class="reveal" style="letter-spacing: 10px; color: var(--brand-yellow); margin-bottom: 1rem;">EST. 2024</p>
+                <h1 class="reveal">THE BOX Z1</h1>
+                <p class="reveal" style="max-width: 600px; margin: 0 auto; color: var(--text-dim);">Where geometric stability meets multi-dimensional performance.</p>
+            </div>
+        </section>
 
-    <section id="join">
-        <div class="join-container reveal">
-            <div class="join-info">
-                <h3>BECOME Z1</h3>
-                <p>We are looking for pioneers to test the stability of the Z1 framework. Access is limited to 100 nodes per cycle.</p>
-                <p style="font-size: 0.8rem; color: var(--brand-blue);">● SYSTEM STATUS: ONLINE</p>
-            </div>
-            <form onsubmit="event.preventDefault(); alert('Transmission Sent. Wait for verification.');">
-                <input type="text" placeholder="NODE NAME" required>
-                <input type="email" placeholder="ENCRYPTED EMAIL" required>
-                <textarea rows="4" placeholder="PURPOSE OF ACCESS"></textarea>
-                <button type="submit" class="btn">CONNECT TO NETWORK</button>
-            </form>
-        </div>
-    </section>
+        <section id="photos">
+            <div class="section-header">
+                <h2 class="reveal">Photos</h2>
+                <p class="reveal">Visual Architecture</p>
+            </div>
+            <div class="photo-grid">
+                <div class="photo-box reveal">Z1_ALPHA_RENDER</div>
+                <div class="photo-box reveal">Z1_BETA_STRUCT</div>
+                <div class="photo-box reveal">Z1_GAMMA_FLOW</div>
+                <div class="photo-box reveal">Z1_DELTA_CORE</div>
+            </div>
+        </section>
 
-    <footer>
-        &copy; 2024 THE BOX Z1 PROJECT // 40.7128° N, 74.0060° W
-    </footer>
+        <section id="specs">
+            <div class="section-header">
+                <h2 class="reveal">Specs</h2>
+                <p class="reveal">Technical DNA</p>
+            </div>
+            <div class="grid">
+                <div class="card reveal">
+                    <h3 style="color: var(--brand-red);">Chassis</h3>
+                    <p>Reinforced geometric frame with integrated thermal venting.</p>
+                </div>
+                <div class="card reveal">
+                    <h3 style="color: var(--brand-blue);">Logic</h3>
+                    <p>Triangulated processing paths for zero-latency response.</p>
+                </div>
+                <div class="card reveal">
+                    <h3 style="color: var(--brand-green);">Engine</h3>
+                    <p>Generative sphere-cycle core for infinite scaling.</p>
+                </div>
+            </div>
+        </section>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+        <section id="join">
+            <div class="section-header">
+                <h2 class="reveal">Join</h2>
+                <p class="reveal">Request Access</p>
+            </div>
+            <div class="form-container">
+                <form onsubmit="event.preventDefault(); alert('Transmission Received.');">
+                    <input type="text" placeholder="Identity Name" class="reveal" required>
+                    <input type="email" placeholder="Email Node" class="reveal" required>
+                    <textarea rows="4" placeholder="Reason for Access" class="reveal"></textarea>
+                    <button type="submit" class="submit-btn reveal">Connect</button>
+                </form>
+            </div>
+        </section>
+    </main>
 
-        // Cursor
-        const cursor = document.getElementById('cursor');
-        const follower = document.getElementById('cursor-follower');
-        document.addEventListener('mousemove', e => {
-            gsap.to(cursor, {x: e.clientX, y: e.clientY, duration: 0});
-            gsap.to(follower, {x: e.clientX - 20, y: e.clientY - 20, duration: 0.1});
-        });
+    <footer>
+        <p>© 2024 THE BOX Z1 PROJECT / ALL RIGHTS RESERVED</p>
+    </footer>
 
-        // Reveals
-        document.querySelectorAll('.reveal').forEach(el => {
-            gsap.to(el, {
-                scrollTrigger: { trigger: el, start: "top 85%" },
-                opacity: 1, y: 0, duration: 1.2, ease: "power4.out"
-            });
-        });
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
 
-        // Hover Effect for Cursor
-        document.querySelectorAll('a, .btn, .gallery-item').forEach(el => {
-            el.addEventListener('mouseenter', () => gsap.to(follower, {scale: 1.5, borderColor: '#fff2ad'}));
-            el.addEventListener('mouseleave', () => gsap.to(follower, {scale: 1, borderColor: 'rgba(255,255,255,0.2)'}));
-        });
-    </script>
+        // --- CURSOR ---
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+            gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.15 });
+        });
+
+        // --- REVEALS ---
+        document.querySelectorAll('.reveal').forEach(el => {
+            gsap.to(el, {
+                scrollTrigger: { trigger: el, start: "top 90%" },
+                opacity: 1, y: 0, duration: 1.2, ease: "power4.out"
+            });
+        });
+
+        // --- PARALLAX ---
+        gsap.to("#ring", { y: -400, scrollTrigger: { scrub: 1 } });
+        gsap.to("#triangle", { y: -600, scrollTrigger: { scrub: 1 } });
+        gsap.to("#sphere", { y: -200, scrollTrigger: { scrub: 1 } });
+
+        // --- HOVER EFFECTS ---
+        document.querySelectorAll('a, button, .card').forEach(el => {
+            el.addEventListener('mouseenter', () => gsap.to(follower, { scale: 1.8, backgroundColor: 'rgba(255,255,255,0.1)' }));
+            el.addEventListener('mouseleave', () => gsap.to(follower, { scale: 1, backgroundColor: 'transparent' }));
+        });
+    </script>
 </body>
 </html>
