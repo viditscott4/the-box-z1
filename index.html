@@ -1,208 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE BOX Z1 | Official Portal</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
-    <style>
-        :root {
-            --bg: #030303;
-            --text: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.4);
-            /* Brand Colors from your Logo */
-            --brand-yellow: #fff2ad; 
-            --brand-blue: #4455f0; 
-            --brand-green: #10cc2c;
-            --brand-red: #e31225;
-            --ease: cubic-bezier(0.2, 1, 0.2, 1);
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BOX Z1 | Official Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        :root {
+            --bg: #030303;
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.4);
+            --brand-yellow: #fff2ad; 
+            --brand-blue: #4455f0; 
+            --brand-green: #10cc2c;
+            --brand-red: #e31225;
+            --ease: cubic-bezier(0.2, 1, 0.2, 1);
+        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; background: var(--bg); }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
-            overflow-x: hidden;
-        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-        /* --- INTERACTIVE CURSOR --- */
-        #cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; }
-        #cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.15s var(--ease); }
+        /* --- ABSTRACT TEXTURE --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 9999;
+        }
 
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed; top: 0; width: 100%;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1.5rem 5%; z-index: 1000;
-            background: rgba(3, 3, 3, 0.8); backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .nav-logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
-        .nav-logo { width: 40px; height: 40px; background: var(--brand-yellow); border-radius: 50%; padding: 4px; object-fit: contain; }
-        .nav-links { display: flex; gap: 2.5rem; }
-        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; transition: 0.3s; }
-        .nav-links a:hover { color: var(--brand-yellow); }
+        /* --- INTERACTIVE CURSOR --- */
+        #cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 10000; mix-blend-mode: difference; display: none; }
+        #cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.15s var(--ease); display: none; }
 
-        /* --- BACKGROUND PARALLAX --- */
-        .bg-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-        .float { position: absolute; opacity: 0.2; filter: blur(3px); }
-        .red-ring { width: 200px; height: 200px; border: 30px solid var(--brand-red); border-radius: 50%; top: 15%; right: 5%; }
-        .blue-triangle { width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid var(--brand-blue); bottom: 10%; left: 5%; }
-        .green-sphere { width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, var(--brand-green), #000); border-radius: 50%; top: 50%; right: 20%; }
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 5%; z-index: 1000;
+            background: rgba(3, 3, 3, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nav-logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+        .nav-logo { width: 32px; height: 32px; background: var(--brand-yellow); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #000; font-size: 12px; }
+        .nav-links { display: flex; gap: 2.5rem; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; transition: 0.3s; }
+        .nav-links a:hover { color: var(--brand-yellow); }
 
-        /* --- SECTIONS --- */
-        section { min-height: 100vh; padding: 140px 10% 100px; position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
-        h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 10vw, 8rem); line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; }
-        .section-header { margin-bottom: 4rem; }
-        .section-header h2 { font-family: 'Syncopate', sans-serif; font-size: 3rem; text-transform: uppercase; margin-bottom: 0.5rem; }
-        .section-header p { color: var(--brand-yellow); letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; }
+        /* --- BACKGROUND PARALLAX --- */
+        .bg-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .float { position: absolute; opacity: 0.15; filter: blur(2px); }
+        .red-ring { width: 250px; height: 250px; border: 40px solid var(--brand-red); border-radius: 50%; top: 10%; right: -50px; }
+        .blue-triangle { width: 0; height: 0; border-left: 100px solid transparent; border-right: 100px solid transparent; border-bottom: 180px solid var(--brand-blue); bottom: 10%; left: 2%; }
+        .green-sphere { width: 150px; height: 150px; background: radial-gradient(circle at 30% 30%, var(--brand-green), #000); border-radius: 50%; top: 40%; right: 15%; }
 
-        /* --- GALLERY --- */
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .photo-box { aspect-ratio: 16/9; background: #0a0a0a; border: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; color: #222; font-weight: 700; transition: 0.5s; }
-        .photo-box:hover { border-color: var(--brand-blue); color: var(--brand-blue); background: #111; }
+        /* --- SECTIONS --- */
+        section { min-height: 100vh; padding: 140px 10% 100px; position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+        h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(2.5rem, 8vw, 7rem); line-height: 0.9; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: -2px; }
+        .section-header { margin-bottom: 4rem; }
+        .section-header h2 { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .section-header p { color: var(--brand-yellow); letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; }
 
-        /* --- SPECS --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .card { background: rgba(255, 255, 255, 0.02); padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s; }
-        .card:hover { border-color: var(--brand-green); transform: translateY(-10px); }
-        .card h3 { margin-bottom: 1rem; font-size: 1.5rem; }
-        .card p { color: var(--text-dim); }
+        /* --- GRID CONTENT --- */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .photo-box { aspect-ratio: 16/9; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; letter-spacing: 2px; color: #444; font-weight: 700; transition: 0.5s; text-transform: uppercase; }
+        .photo-box:hover { border-color: var(--brand-blue); color: var(--brand-blue); background: rgba(68, 85, 240, 0.05); }
 
-        /* --- JOIN FORM --- */
-        .form-container { max-width: 600px; }
-        input, select, textarea { width: 100%; background: #000; border: 1px solid #222; padding: 1.2rem; color: #fff; margin-bottom: 1.2rem; font-family: inherit; }
-        input:focus { border-color: var(--brand-yellow); outline: none; }
-        .submit-btn { width: 100%; padding: 1.2rem; background: #fff; color: #000; border: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-        .submit-btn:hover { background: var(--brand-yellow); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .card { background: rgba(255, 255, 255, 0.02); padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.5s; border-radius: 2px; }
+        .card:hover { border-color: var(--brand-green); transform: translateY(-10px); background: rgba(16, 204, 44, 0.02); }
+        .card h3 { margin-bottom: 1rem; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
+        .card p { color: var(--text-dim); font-size: 0.95rem; }
 
-        footer { padding: 60px 10%; border-top: 1px solid #111; text-align: center; color: var(--text-dim); font-size: 0.7rem; letter-spacing: 4px; }
-        .reveal { opacity: 0; transform: translateY(30px); }
-    </style>
+        /* --- FORM --- */
+        .form-container { max-width: 600px; }
+        input, textarea { width: 100%; background: transparent; border: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; color: #fff; margin-bottom: 1.2rem; font-family: inherit; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: var(--brand-yellow); outline: none; background: rgba(255,255,255,0.02); }
+        .submit-btn { width: 100%; padding: 1.2rem; background: #fff; color: #000; border: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; cursor: pointer; }
+        .submit-btn:hover { background: var(--brand-yellow); letter-spacing: 4px; }
+
+        footer { padding: 80px 10% 40px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-dim); font-size: 0.6rem; letter-spacing: 4px; }
+        
+        .reveal { opacity: 0; transform: translateY(30px); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            section { padding: 100px 5% 60px; }
+            h1 { font-size: 3.5rem; }
+        }
+    </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
-    <nav>
-        <a href="#home" class="nav-logo-wrap">
-            <img src="image_98ea0b.png" alt="Z1 Logo" class="nav-logo">
-            <span style="font-family: 'Syncopate'; font-weight: 700; letter-spacing: 3px; font-size: 0.8rem;">BOX Z1</span>
-        </a>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#photos">Photos</a>
-            <a href="#specs">Specs</a>
-            <a href="#join">Join</a>
-        </div>
-    </nav>
+    <nav>
+        <a href="#home" class="nav-logo-wrap">
+            <div class="nav-logo">Z1</div>
+            <span style="font-family: 'Syncopate'; font-weight: 700; letter-spacing: 3px; font-size: 0.8rem;">BOX Z1</span>
+        </a>
+        <div class="nav-links">
+            <a href="#home">Initiate</a>
+            <a href="#photos">Archive</a>
+            <a href="#specs">Logic</a>
+            <a href="#join">Connect</a>
+        </div>
+    </nav>
 
-    <div class="bg-shapes">
-        <div class="float red-ring" id="ring"></div>
-        <div class="float blue-triangle" id="triangle"></div>
-        <div class="float green-sphere" id="sphere"></div>
-    </div>
+    <div class="bg-shapes">
+        <div class="float red-ring" id="ring"></div>
+        <div class="float blue-triangle" id="triangle"></div>
+        <div class="float green-sphere" id="sphere"></div>
+    </div>
 
-    <main>
-        <section id="home">
-            <div style="text-align: center;">
-                <p class="reveal" style="letter-spacing: 10px; color: var(--brand-yellow); margin-bottom: 1rem;">EST. 2024</p>
-                <h1 class="reveal">THE BOX Z1</h1>
-                <p class="reveal" style="max-width: 600px; margin: 0 auto; color: var(--text-dim);">Where geometric stability meets multi-dimensional performance.</p>
-            </div>
-        </section>
+    <main>
+        <section id="home">
+            <div style="text-align: center;">
+                <p class="reveal" style="letter-spacing: 10px; color: var(--brand-yellow); margin-bottom: 1.5rem; font-weight: 300;">CORE_VERSION_1.0</p>
+                <h1 class="reveal">THE BOX Z1</h1>
+                <p class="reveal" style="max-width: 650px; margin: 0 auto; color: var(--text-dim); font-size: 1.1rem; font-weight: 300;">An abstract exploration into geometric stability and multi-dimensional logic processing.</p>
+            </div>
+        </section>
 
-        <section id="photos">
-            <div class="section-header">
-                <h2 class="reveal">Photos</h2>
-                <p class="reveal">Visual Architecture</p>
-            </div>
-            <div class="photo-grid">
-                <div class="photo-box reveal">Z1_ALPHA_RENDER</div>
-                <div class="photo-box reveal">Z1_BETA_STRUCT</div>
-                <div class="photo-box reveal">Z1_GAMMA_FLOW</div>
-                <div class="photo-box reveal">Z1_DELTA_CORE</div>
-            </div>
-        </section>
+        <section id="photos">
+            <div class="section-header">
+                <h2 class="reveal">Archive</h2>
+                <p class="reveal">Visual Manifestations</p>
+            </div>
+            <div class="photo-grid">
+                <div class="photo-box reveal">Z1_ARRAY_01</div>
+                <div class="photo-box reveal">Z1_ARRAY_02</div>
+                <div class="photo-box reveal">Z1_ARRAY_03</div>
+                <div class="photo-box reveal">Z1_ARRAY_04</div>
+            </div>
+        </section>
 
-        <section id="specs">
-            <div class="section-header">
-                <h2 class="reveal">Specs</h2>
-                <p class="reveal">Technical DNA</p>
-            </div>
-            <div class="grid">
-                <div class="card reveal">
-                    <h3 style="color: var(--brand-red);">Chassis</h3>
-                    <p>Reinforced geometric frame with integrated thermal venting.</p>
-                </div>
-                <div class="card reveal">
-                    <h3 style="color: var(--brand-blue);">Logic</h3>
-                    <p>Triangulated processing paths for zero-latency response.</p>
-                </div>
-                <div class="card reveal">
-                    <h3 style="color: var(--brand-green);">Engine</h3>
-                    <p>Generative sphere-cycle core for infinite scaling.</p>
-                </div>
-            </div>
-        </section>
+        <section id="specs">
+            <div class="section-header">
+                <h2 class="reveal">Logic</h2>
+                <p class="reveal">Operational DNA</p>
+            </div>
+            <div class="grid">
+                <div class="card reveal">
+                    <h3 style="color: var(--brand-red);">Frame</h3>
+                    <p>Non-Euclidean structural integrity designed for infinite conceptual scaling.</p>
+                </div>
+                <div class="card reveal">
+                    <h3 style="color: var(--brand-blue);">Pulse</h3>
+                    <p>Asynchronous data flow ensuring zero-latency between thought and execution.</p>
+                </div>
+                <div class="card reveal">
+                    <h3 style="color: var(--brand-green);">Nucleus</h3>
+                    <p>A generative sphere-cycle core that evolves based on user interaction levels.</p>
+                </div>
+            </div>
+        </section>
 
-        <section id="join">
-            <div class="section-header">
-                <h2 class="reveal">Join</h2>
-                <p class="reveal">Request Access</p>
-            </div>
-            <div class="form-container">
-                <form onsubmit="event.preventDefault(); alert('Transmission Received.');">
-                    <input type="text" placeholder="Identity Name" class="reveal" required>
-                    <input type="email" placeholder="Email Node" class="reveal" required>
-                    <textarea rows="4" placeholder="Reason for Access" class="reveal"></textarea>
-                    <button type="submit" class="submit-btn reveal">Connect</button>
-                </form>
-            </div>
-        </section>
-    </main>
+        <section id="join">
+            <div class="section-header">
+                <h2 class="reveal">Connect</h2>
+                <p class="reveal">Initialize Access</p>
+            </div>
+            <div class="form-container">
+                <form onsubmit="event.preventDefault(); alert('Transmission Received. Initializing...');">
+                    <input type="text" placeholder="IDENTITY_NAME" class="reveal" required>
+                    <input type="email" placeholder="NODE_EMAIL" class="reveal" required>
+                    <textarea rows="4" placeholder="REASON_FOR_INITIALIZATION" class="reveal"></textarea>
+                    <button type="submit" class="submit-btn reveal">Connect to Core</button>
+                </form>
+            </div>
+        </section>
+    </main>
 
-    <footer>
-        <p>© 2024 THE BOX Z1 PROJECT / ALL RIGHTS RESERVED</p>
-    </footer>
+    <footer>
+        <p>© 2026 THE BOX Z1 PROJECT // 40.7128° N, 74.0060° W</p>
+    </footer>
 
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
 
-        // --- CURSOR ---
-        const cursor = document.getElementById('cursor');
-        const follower = document.getElementById('cursor-follower');
-        window.addEventListener('mousemove', (e) => {
-            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
-            gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.15 });
-        });
+        // --- MOBILE CHECK ---
+        const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+        
+        if (!isTouchDevice) {
+            const cursor = document.getElementById('cursor');
+            const follower = document.getElementById('cursor-follower');
+            cursor.style.display = 'block';
+            follower.style.display = 'block';
+            document.body.style.cursor = 'none';
 
-        // --- REVEALS ---
-        document.querySelectorAll('.reveal').forEach(el => {
-            gsap.to(el, {
-                scrollTrigger: { trigger: el, start: "top 90%" },
-                opacity: 1, y: 0, duration: 1.2, ease: "power4.out"
-            });
-        });
+            window.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+                gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.15 });
+            });
 
-        // --- PARALLAX ---
-        gsap.to("#ring", { y: -400, scrollTrigger: { scrub: 1 } });
-        gsap.to("#triangle", { y: -600, scrollTrigger: { scrub: 1 } });
-        gsap.to("#sphere", { y: -200, scrollTrigger: { scrub: 1 } });
+            // Hover interactions
+            document.querySelectorAll('a, button, .card, .photo-box').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    gsap.to(follower, { scale: 2, backgroundColor: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.5)' });
+                });
+                el.addEventListener('mouseleave', () => {
+                    gsap.to(follower, { scale: 1, backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)' });
+                });
+            });
+        }
 
-        // --- HOVER EFFECTS ---
-        document.querySelectorAll('a, button, .card').forEach(el => {
-            el.addEventListener('mouseenter', () => gsap.to(follower, { scale: 1.8, backgroundColor: 'rgba(255,255,255,0.1)' }));
-            el.addEventListener('mouseleave', () => gsap.to(follower, { scale: 1, backgroundColor: 'transparent' }));
-        });
-    </script>
+        // --- REVEAL ANIMATIONS ---
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach((el) => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                ease: "power4.out"
+            });
+        });
+
+        // --- PARALLAX SHAPES ---
+        gsap.to("#ring", { 
+            y: -300, rotation: 45, 
+            scrollTrigger: { scrub: 1 } 
+        });
+        gsap.to("#triangle", { 
+            y: -500, rotation: -20, 
+            scrollTrigger: { scrub: 1 } 
+        });
+        gsap.to("#sphere", { 
+            y: -200, scale: 1.2, 
+            scrollTrigger: { scrub: 1 } 
+        });
+
+        // --- TITLE GLITCH EFFECT ON LOAD ---
+        window.onload = () => {
+            gsap.from("h1", {
+                opacity: 0,
+                duration: 2,
+                delay: 0.5,
+                ease: "expo.out"
+            });
+        };
+    </script>
 </body>
 </html>
